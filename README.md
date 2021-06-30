@@ -3,8 +3,10 @@ A discord bot that will give wheather report of a city to a pre configured disco
 
 It uses openwheather and discord APIs so you need to get api key from openweather and auth token from discord devloper portal in order to use this bot.
 
+![logo](/ss/logo.png)
+
 <h2>Before running code</h2>
-*Before running code change the following:*
+**Before running code change the following:**
 
 1. In /cogs/main.py line:20 - Change your city(type:str)
  
