@@ -4,6 +4,7 @@ import time
 import logging
 import requests
 import random
+from discord.ext import tasks, commands
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,6 +22,7 @@ async def on_ready():
         )
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"Weather Updates."))
     print(f'Bot is ready to go!')
+    await auto.start()
 
 @bot.command(hidden=True)
 async def reload(ctx, extension):
@@ -42,45 +44,45 @@ async def activity(ctx, arg, arg2, arg3=None):
         time.sleep(0.5)
         await ctx.channel.purge(limit=2)
     else:
-        msg = await ctx.send('Fuck off. You are not authorized', delete_after=10)
+        msg = await ctx.send('Fuck off. You are not authorized', delete_after=60)
 
-@bot.command(hidden=True)
-async def start(ctx):
-    while True:
-        #city 1
-        city = 'Delhi'
-        key = '{Your Open Wheather API Key}'
-        url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key
-        a = requests.get(url)
-        data = a.json()
-        if a.status_code==200:
-            main = data['main']
-            temp = int(main['temp'])-273
-            temprature = str(temp)+'°C'
-            humidity = main['humidity']
-            pressure = main['pressure']
-            report = data['weather']
-            cit = f"{city:-^30}\nTemperature: {temprature}\nHumidity: {humidity}\nPressure: {pressure}\nWeather Report: {report[0]['description']}"
-            temp=discord.Embed(title=f"Weather report for {city}", description=cit, color=random.randint(0, 0xffffff))
-            channel = bot.get_channel(1013697327879421993)
-            await channel.send(embed=temp, delete_after=1800)
-        #city 2
-        city = 'Lucknow'
-        key = '{Your Open Wheather API Key}'
-        url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key
-        a = requests.get(url)
-        data = a.json()
-        if a.status_code==200:
-            main = data['main']
-            temp = int(main['temp'])-273
-            temprature = str(temp)+'°C'
-            humidity = main['humidity']
-            pressure = main['pressure']
-            report = data['weather']
-            cit = f"{city:-^30}\nTemperature: {temprature}\nHumidity: {humidity}\nPressure: {pressure}\nWeather Report: {report[0]['description']}"
-            temp=discord.Embed(title=f"Weather report for {city}", description=cit, color=random.randint(0, 0xffffff))
-            channel = bot.get_channel(1013697327879421993)
-            await channel.send(embed=temp, delete_after=1800)
-        time.sleep(1800)
+@tasks.loop(minutes=5.0)
+async def auto():
+    channel = bot.get_channel(1013697327879421993)
+    await channel.purge(limit=100)
+    #city 1
+    city = 'Delhi'
+    key = ''
+    url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key
+    a = requests.get(url)
+    data = a.json()
+    if a.status_code==200:
+        main = data['main']
+        temp = int(main['temp'])-273
+        temprature = str(temp)+'°C'
+        humidity = main['humidity']
+        pressure = main['pressure']
+        report = data['weather']
+        cit = f"{city:-^30}\nTemperature: {temprature}\nHumidity: {humidity}\nPressure: {pressure}\nWeather Report: {report[0]['description']}"
+        temp=discord.Embed(title=f"Weather report for {city}", description=cit, color=random.randint(0, 0xffffff))
+        channel = bot.get_channel(1013697327879421993)
+        await channel.send(embed=temp)
+    #city 2
+    city = 'Lucknow'
+    key = ''
+    url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key
+    a = requests.get(url)
+    data = a.json()
+    if a.status_code==200:
+        main = data['main']
+        temp = int(main['temp'])-273
+        temprature = str(temp)+'°C'
+        humidity = main['humidity']
+        pressure = main['pressure']
+        report = data['weather']
+        cit = f"{city:-^30}\nTemperature: {temprature}\nHumidity: {humidity}\nPressure: {pressure}\nWeather Report: {report[0]['description']}"
+        temp=discord.Embed(title=f"Weather report for {city}", description=cit, color=random.randint(0, 0xffffff))
+        channel = bot.get_channel(1013697327879421993)
+        await channel.send(embed=temp)
 
-bot.run('{Your Bot Token}', reconnect = True)
+bot.run('', reconnect = True)
