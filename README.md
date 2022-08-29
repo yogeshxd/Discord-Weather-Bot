@@ -22,8 +22,6 @@ Before running code change the following in bot.py:
 <h2>Running the code</h2>
 To run the bot open cmd in folder where bot.py file is present and type in `python bot.py`. You bott will be up and running in less then 10 secs.
 
-![ter](/ss/terminal.png)
-
 <h2>Message Demo</h2>
 
 ![demo](/ss/discord.png)
