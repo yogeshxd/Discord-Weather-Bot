@@ -6,7 +6,7 @@ It uses openwheather and discord APIs so you need to get api key from openweathe
 ![logo](/ss/logo.png)
 
 <h2>Before running code</h2>
-**Before running code change the following in bot.py:**
+Before running code change the following in bot.py:
 
 1.Change your city(type:str)
  
