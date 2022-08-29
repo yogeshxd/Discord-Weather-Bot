@@ -16,7 +16,6 @@ async def on_ready():
         print(
         f'{i}'
         )
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"Xtreme India Roleplay."))
     print(f'Bot is ready to go!')
 
 @bot.command(hidden=True)
